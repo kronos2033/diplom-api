@@ -5,7 +5,7 @@ const ValidateError = require('../errors/ValidateError');
 
 module.exports.getMovies = (req, res, next) => {
   Movie.find({})
-    .then((movies) => res.status(200).send(movies))
+    .then((movies) => res.send(movies))
     .catch(next);
 };
 
@@ -37,7 +37,7 @@ module.exports.createMovie = (req, res, next) => {
     movieId,
     owner: req.user._id,
   })
-    .then((movie) => res.status(200).send(movie))
+    .then((movie) => res.send(movie))
     .catch((err) => {
       if (err.name === 'ValidationError' || err.name === 'CastError') {
         next(new ValidateError('Неверный формат введенных данных'));
@@ -55,7 +55,7 @@ module.exports.deleteMovie = (req, res, next) => {
       } else if (movie.owner.toString() !== req.user._id) {
         throw new ForbidError('Недостаточно прав для удаления');
       } else {
-        return movie.remove().then(() => res.status(200).send(movie)).cathc(next);
+        return movie.remove().then(() => res.send(movie)).catch(next);
       }
     })
     .catch((err) => {

@@ -34,4 +34,9 @@ const validateCreateMovie = celebrate({
   }),
 });
 
-module.exports = { validatePatchUser, validateCreateMovie, validatiSignUser };
+const validateDeleteMovie = celebrate({
+  body: Joi.object().keys({
+    _id: Joi.string().hex().length(24),
+  })
+})
+module.exports = { validatePatchUser, validateCreateMovie, validatiSignUser, validateDeleteMovie };

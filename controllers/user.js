@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const PageNotFoundError = require('../errors/PageNotFoundError');
 const ValidationError = require('../errors/ValidateError');
 const ConflictedError = require('../errors/ConflictedError');
+const ForbidError = require('../errors/ForbidError');
 const User = require('../models/user');
 
 const { NODE_ENV, JWT_SECRET } = process.env;
@@ -13,7 +14,7 @@ module.exports.aboutMe = (req, res, next) => {
       if (!user) {
         throw new PageNotFoundError('Такого пользователя не найдено');
       }
-      return res.status(200).send(user);
+      return res.send(user);
     })
     .catch(next);
 };
@@ -24,11 +25,13 @@ module.exports.updateUserInfo = (req, res, next) => {
     .then((user) => {
       if (!user) {
         throw new PageNotFoundError('Такого пользователя нет в базе данных');
+      } else if ( user._id !== req.body._id) {
+        throw new ForbidError('Недостаточно прав для удаления');
       }
-      return res.status(200).send(user);
+      return res.send(user);
     })
     .catch((err) => {
-      if (err.name === 'CastError' || err.name === 'ValidationError') {
+      if (err.name === 'ValidationError') {
         next(new ValidationError('Неверный формат переданных данных'));
       } else {
         next(err);
@@ -41,7 +44,7 @@ module.exports.createUser = (req, res, next) => {
   bcrypt
     .hash(password, 10)
     .then((hash) => User.create({ name, email, password: hash }))
-    .then((user) => res.status(200).send({ name: user.name, email: user.email }))
+    .then((user) => res.send({ name: user.name, email: user.email }))
     .catch((err) => {
       if (err.name === 'CastError' || err.name === 'ValidationError') {
         next(new ValidationError('Неверный формат переданных данных'));
@@ -69,7 +72,7 @@ module.exports.login = (req, res, next) => {
           expiresIn: '7d',
         },
       );
-      return res.status(200).send({ token });
+      return res.send({ token });
     })
     .catch(next);
 };
@@ -80,7 +83,7 @@ module.exports.aboutMe = (req, res, next) => {
       if (!user) {
         throw new PageNotFoundError('Такого пользователя не найдено');
       }
-      return res.status(200).send(user);
+      return res.send(user);
     })
     .catch(next);
 };
