@@ -4,11 +4,11 @@ const movieRouter = require('./movie');
 const auth = require('../middlewares/auth');
 
 const { createUser, login } = require('../controllers/user');
-const { validatiSignUser } = require('../middlewares/validation');
+const { validatiSignUpUser, validatiSignInUser } = require('../middlewares/validation');
 const PageNotFoundError = require('../errors/PageNotFoundError');
 
-router.post('/signup', validatiSignUser, createUser);
-router.post('/signin', validatiSignUser, login);
+router.post('/signup', validatiSignUpUser, createUser);
+router.post('/signin', validatiSignInUser, login);
 router.use(auth);
 router.use('/users', userRouter);
 router.use('/movies', movieRouter);

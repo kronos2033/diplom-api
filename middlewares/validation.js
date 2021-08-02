@@ -8,12 +8,21 @@ const validatePatchUser = celebrate({
   }),
 });
 
-const validatiSignUser = celebrate({
+const validatiSignUpUser = celebrate({
   body: Joi.object()
     .keys({
       email: Joi.string().required().email(),
       password: Joi.string().required(),
       name: Joi.string().required().min(2).max(30),
+    })
+    .unknown(true),
+});
+
+const validatiSignInUser = celebrate({
+  body: Joi.object()
+    .keys({
+      email: Joi.string().required().email(),
+      password: Joi.string().required(),
     })
     .unknown(true),
 });
@@ -37,6 +46,12 @@ const validateCreateMovie = celebrate({
 const validateDeleteMovie = celebrate({
   body: Joi.object().keys({
     _id: Joi.string().hex().length(24),
-  })
-})
-module.exports = { validatePatchUser, validateCreateMovie, validatiSignUser, validateDeleteMovie };
+  }),
+});
+module.exports = {
+  validatePatchUser,
+  validateCreateMovie,
+  validatiSignInUser,
+  validatiSignUpUser,
+  validateDeleteMovie,
+};
