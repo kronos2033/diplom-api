@@ -1,12 +1,13 @@
-require('dotenv').config();
-const express = require('express');
-const mongoose = require('mongoose');
-const cors = require('cors');
-const { errors } = require('celebrate');
-const router = require('./routes');
-const { requestLogger, errorLogger } = require('./middlewares/logger');
+require("dotenv").config();
+const express = require("express");
+const mongoose = require("mongoose");
+const cors = require("cors");
+const { errors } = require("celebrate");
+const router = require("./routes");
+const { requestLogger, errorLogger } = require("./middlewares/logger");
 
-const { PORT = 3000, MONGO_URL = 'mongodb://localhost:27017/diplomfilmsdb' } = process.env;
+const { PORT = 3000, MONGO_URL = "mongodb://localhost:27017/diplomfilmsdb" } =
+  process.env;
 const app = express();
 mongoose.connect(MONGO_URL, {
   useNewUrlParser: true,
@@ -24,8 +25,10 @@ app.use(errors());
 app.use((err, req, res, next) => {
   const { statusCode, message } = err;
   res.status(statusCode).send({
-    message: statusCode === 500 ? 'На сервере произошла ошибка' : message,
+    message: statusCode === 500 ? "На сервере произошла ошибка" : message,
   });
   next();
 });
-app.listen(PORT);
+app.listen(PORT, () => {
+  console.log("server");
+});
