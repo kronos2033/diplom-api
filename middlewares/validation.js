@@ -3,8 +3,8 @@ const { validateUrl } = require('../errors/CelebrateUrlError');
 
 const validatePatchUser = celebrate({
   body: Joi.object().keys({
-    name: Joi.string().required().min(2).max(30),
-    email: Joi.string().required().email(),
+    name: Joi.string().min(2).max(30),
+    email: Joi.string().email(),
   }),
 });
 
