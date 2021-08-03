@@ -20,14 +20,11 @@ module.exports.aboutMe = (req, res, next) => {
 };
 
 module.exports.updateUserInfo = (req, res, next) => {
+  const { email, name } = req.body;
   User.findByIdAndUpdate(req.user._id, { email, name }, { new: true })
     .then((user) => {
       if (!user) {
         throw new PageNotFoundError('Такого пользователя нет в базе данных');
-      } else if ( user._id !== req.body._id) {
-        console.log(user._id, req.body._id);
-        res.send(user._id, req.body._id);
-        throw new ForbidError('Недостаточно прав для удаления');
       }
       return res.send(user);
     })
