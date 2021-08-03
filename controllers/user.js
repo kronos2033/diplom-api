@@ -21,6 +21,7 @@ module.exports.aboutMe = (req, res, next) => {
 
 module.exports.updateUserInfo = (req, res, next) => {
   const { email, name } = req.body;
+console.log(req.body._id)
   User.findByIdAndUpdate(req.user._id, { email, name }, { new: true })
     .then((user) => {
       if (!user) {
