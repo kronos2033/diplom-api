@@ -2,6 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const path = require('path')
 const { errors } = require("celebrate");
 const router = require("./routes");
 const { requestLogger, errorLogger } = require("./middlewares/logger");
@@ -16,6 +17,7 @@ mongoose.connect(MONGO_URL, {
   useFindAndModify: false,
 });
 app.use(express.json());
+app.use(express.static(path.join(__dirname, 'build')));
 app.use(requestLogger);
 app.use(cors());
 app.use(router);
