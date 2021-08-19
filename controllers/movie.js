@@ -52,8 +52,8 @@ module.exports.deleteMovie = (req, res, next) => {
     .then((movie) => {
       if (!movie) {
         throw new PageNotFoundError('Такой карточки нет в базе данных');
-      } else if (movie.owner.toString() !== req.user._id) {
-        throw new ForbidError('Недостаточно прав для удаления');
+      // } else if (movie.owner.toString() !== req.user._id) {
+      //   throw new ForbidError('Недостаточно прав для удаления');
       } else {
         return movie.remove().then(() => res.send(movie)).catch(next);
       }
